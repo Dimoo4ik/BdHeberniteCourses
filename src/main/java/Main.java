@@ -22,7 +22,7 @@ public class Main {
         studentList.forEach(System.out::println);
 
 
-        System.out.println("Name course: " + course + "\nT: " + course.getTeacher());
+        System.out.println("Name cour se: " + course + "\nT: " + course.getTeacher());
 
 
         sessionFactory.close();
