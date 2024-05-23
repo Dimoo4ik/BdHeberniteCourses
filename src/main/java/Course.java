@@ -1,5 +1,8 @@
 import jakarta.persistence.Entity;
 import jakarta.persistence.*;
+
+import java.util.List;
+
 @Entity
 @Table(name = "courses")
 public class Course {
@@ -9,16 +12,27 @@ public class Course {
     private String name;
     private int duration;
     @Enumerated(EnumType.STRING)
+
     @Column(name = "type", columnDefinition = "enum")
     private CourseType courseType;
     private String description;
-    @Column(name = "teacher_id")
-    private int teacherId;
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Teacher teacher;
+
     @Column(name = "students_count")
     private int studentsCount;
     private int price;
     @Column(name = "price_per_hour")
     private float pricePerHour;
+
+
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "subscriptions",
+            joinColumns = {@JoinColumn(name = "student_id")},
+    inverseJoinColumns = {@JoinColumn(name = "course_id")})
+
+    private List<Student> students;
 
     public int getId() {
         return id;
@@ -60,14 +74,14 @@ public class Course {
         this.description = description;
     }
 
-    public int getTeacherId() {
-        return teacherId;
+
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
-
     public int getStudentsCount() {
         return studentsCount;
     }
@@ -92,14 +106,26 @@ public class Course {
         this.pricePerHour = pricePerHour;
     }
 
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
     @Override
     public String toString() {
-        return "Course{" + "id=" + id +
+        return "Course{" +
+                "id=" + id +
                 ", name='" + name + '\'' +
-                ", duration=" + duration + ", courseType=" + courseType +
-                ", description='" + description + '\'' + ", teacherId=" + teacherId +
+                ", duration=" + duration +
+                ", courseType=" + courseType +
+                ", description='" + description + '\'' +
+                ", teacher=" + teacher +
                 ", studentsCount=" + studentsCount +
-                ", price=" + price + ", pricePerHour=" + pricePerHour +
+                ", price=" + price +
+                ", pricePerHour=" + pricePerHour +
                 '}';
     }
 }

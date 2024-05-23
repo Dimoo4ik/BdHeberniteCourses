@@ -5,6 +5,8 @@ import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 
+import java.util.List;
+
 public class Main {
     public static void main(String[] args) throws Exception {
         StandardServiceRegistry registry = new StandardServiceRegistryBuilder()
@@ -13,8 +15,15 @@ public class Main {
         SessionFactory sessionFactory = metadata.getSessionFactoryBuilder().build();
 
         Session session = sessionFactory.openSession();
-        Course course = session.get(Course.class, 45);
-        System.out.println("Name course: " + course);
+        Course course = session.get(Course.class, 3);
+
+
+        List<Student> studentList = course.getStudents();
+        studentList.forEach(System.out::println);
+
+
+        System.out.println("Name course: " + course + "\nT: " + course.getTeacher());
+
 
         sessionFactory.close();
     }
